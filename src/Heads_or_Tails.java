@@ -30,10 +30,9 @@ public class Heads_or_Tails {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		boolean t = true;
 
 		System.out.println(welcomeMsg);
-		getValidUserInput(t);
+		getValidUserInput();
 
 		System.out.println(howManyMsg);
 		numberOfFlips = scnr.nextInt();
@@ -48,7 +47,12 @@ public class Heads_or_Tails {
 
 	}
 
-	private static void getValidUserInput(boolean t) {
+	/**
+	 * a loop that continues until user in put is valid "heads" or "tails" (not case
+	 * sensitive).
+	 */
+	private static void getValidUserInput() {
+		boolean t = true;
 		while (t) {
 			headsOrTailsGuess = scnr.nextLine();
 
@@ -60,7 +64,6 @@ public class Heads_or_Tails {
 		}
 	}
 
-	// OPERATORS
 	/**
 	 * Validates user entry of "heads" or "tails" .
 	 * 
