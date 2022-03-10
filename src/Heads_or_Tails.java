@@ -1,74 +1,103 @@
 import java.util.Scanner;
 import java.util.Random;
 
+/**
+ * @author Dusting Mills
+ *
+ * Performs a simulated pseudo-random coin-toss (or multiple tosses,
+ * based on user input) and shows results of that(those) toss(es)
+ * including the percentage of tosses that the user's guess was correct.
+ */
 public class Heads_or_Tails {
+	private final static String welcomeMsg = "Welcome to the major life decision assistant. \n" + "Please type \"heads\" or \"tails\"";
+	private final static String unrecognizedMsg = "Unrecognized input. Please enter either \"heads\" or \"tails\". Try again.";
+	private final static String howManyMsg = "How many coin-tosses would you like to do?";
+	private final static String startFlipMsg = "\nOk, lets start flipping...";
 	
-	private final static String welcomeMsg = "Welcome to the major life decision assistant. Please enter \"heads\" or \"tails\"";
-	private final static String invalidInputMsg = "Unrecognized input. Please enter either \"heads\" or \"tails\" only. Try again\n";
-	private final static String tossCountMsg = "How many coin-tosses would you like to do?";
-	private final static String startFlipMsg = "\nOk, start flipping...";
-
 	static Scanner scnr = new Scanner(System.in);
 	static Random ran = new Random();
 
-	static String headsOrTailsGuess = "";
+	static String headsOrTailsGuess;
 	static int numberOfFlips = 0;
 	static int correctCount = 0;
 	static int percentCorrect = 0;
-
+			
+	/**
+	 * Displays text to prompt user for input of a "heads" or "tails" guess and 
+	 * number of coin tosses the user would like to perform.
+	 * Input is stored as variables and passed through methods in Heads_or_Tails class.
+	 * 
+	 * @param args
+	 */
 	public static void main(String[] args) {
+
 		System.out.println(welcomeMsg);
+		getValidUserInput();
 
-		validateUserInput();
+		System.out.println(howManyMsg);
+		numberOfFlips = scnr.nextInt();
 
-		System.out.println(tossCountMsg);
-		numberOfFlips = scnr.nextInt(); //fix me: valid the user entry is an integer - in case of user enters a string! 
-		                                //reference link:https://stackoverflow.com/questions/3059333/validating-input-using-java-util-scanner
 		System.out.println(startFlipMsg);
 		totalFlips();
 
-		System.out.println("\nYour guess, " 
-				+ headsOrTailsGuess + ", came up " 
-				+ correctCount + " time(s). \nThat's "
-				+ percentCorrect(correctCount, numberOfFlips) + "%.");
+		System.out.println("\nYour guess, " + headsOrTailsGuess + ", came up " + correctCount
+				+ " time(s). \nThis is " + percentCorrect(correctCount, numberOfFlips) + "%.");
 
 		scnr.close();
 
 	}
 
-	// validates user input. if input is invalid, prompt message to ask try again
-	private static void validateUserInput() {
-		boolean isValid = true;
-		while (isValid) {
+	/**
+	 * A loop to ensure proper user input of "heads" or "tails" (not case
+	 * sensitive).
+	 */
+	private static void getValidUserInput() {
+		boolean t = true;
+		while (t) {
 			headsOrTailsGuess = scnr.nextLine();
 
 			if (isChoiceValid(headsOrTailsGuess)) {
-				isValid = false;
+				t = false;
 			} else {
-				System.out.print(invalidInputMsg);
+				System.out.println(unrecognizedMsg);
 			}
 		}
 	}
 
-	// OPERATORS
-	// validates user entry of "heads" or "tails"
+	/**
+	 * Validates user entry of "heads" or "tails" .
+	 * 
+	 * @param str "heads" or "tails".
+	 * @return true if string parameters are met, false otherwise.
+	 */
 	private static boolean isChoiceValid(String str) {
-		return str.equalsIgnoreCase("heads") || (str.equalsIgnoreCase("tails"));
+		if (str.equalsIgnoreCase("heads") || (str.equalsIgnoreCase("tails"))) {
+			return true;
+		}
+		return false;
 	}
 
-	// performs headsOrTails() as many times as user indicates via numberOfFlips
-	// variable and increments counter for correct guesses
+	/**
+	 * Performs headsOrTails() as many times as user indicates with
+	 * user input numberOfFlips and increments correctCount variable
+	 * by 1 for each correct guess. 
+	 */
 	private static void totalFlips() {
 		for (int i = 0; i < numberOfFlips; i++) {
 			String s = headsOrTails();
-			System.out.println(s); // output each flip result
+			System.out.println(s);
 			if (s.equalsIgnoreCase(headsOrTailsGuess)) {
-				correctCount++; // increment the counter
+				correctCount++;
 			}
 		}
 	}
 
-	// Returns String "heads" or "tails" based on randomly generated 0 or 1
+	/**
+	 * Randomly generates a 0 or 1 with Random.nextInt() and assigns that value
+	 * to either a "tails" or "heads".
+	 * 
+	 * @return String "heads" or "tails" based on randomly generated 0 or 1.
+	 */
 	private static String headsOrTails() {
 		int num = ran.nextInt(2);
 		String coin = "";
@@ -80,7 +109,13 @@ public class Heads_or_Tails {
 		return coin;
 	}
 
-	// percent correct calculator
+	/**
+	 * Calculates % of two integers.
+	 * 
+	 * @param a integer correctCount.
+	 * @param b integer numberOfFlips.
+	 * @return integer cast from percentage calculation of a/b.
+	 */
 	private static int percentCorrect(int a, int b) {
 		return (int) Math.round(a * 100.0 / b);
 	}
